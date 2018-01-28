@@ -22,8 +22,8 @@
         "usart0_tx",
         "usb",
         "timer2"
-    ], 
-    "partname_humanreadable": "EFM32 Happy Gecko series", 
+    ],
+    "partname_humanreadable": "EFM32 Happy Gecko series",
     "partname_doxygen": "EFM32HG",
     "includeguard": "LIBOPENCM3_EFM32HG_NVIC_H"
 }
