@@ -93,8 +93,8 @@ void cmu_osc_on(enum cmu_osc osc)
 	case LFRCO:
 		CMU_OSCENCMD = CMU_OSCENCMD_LFRCOEN;
 	break;
-	case ULFRCO:
-		/* TODO: but how? */
+	case USHFRCO:
+		CMU_OSCENCMD = CMU_OSCENCMD_USHFRCOEN;
 	break;
 	case HFXO:
 		CMU_OSCENCMD = CMU_OSCENCMD_HFXOEN;
@@ -121,8 +121,8 @@ void cmu_osc_off(enum cmu_osc osc)
 	case LFRCO:
 		CMU_OSCENCMD = CMU_OSCENCMD_LFRCODIS;
 	break;
-	case ULFRCO:
-		/* TODO: but how? */
+	case USHFRCO:
+		CMU_OSCENCMD = CMU_OSCENCMD_USHFRCODIS;
 	break;
 	case HFXO:
 		CMU_OSCENCMD = CMU_OSCENCMD_HFXODIS;
@@ -151,8 +151,8 @@ bool cmu_osc_ready_flag(enum cmu_osc osc)
 	case LFRCO:
 		return (CMU_STATUS & CMU_STATUS_LFRCORDY) != 0;
 	break;
-	case ULFRCO:
-		/* TODO: but how? */
+	case USHFRCO:
+		return (CMU_STATUS & CMU_STATUS_USHFRCORDY) != 0;
 	break;
 	case HFXO:
 		return (CMU_STATUS & CMU_STATUS_HFXORDY) != 0;
@@ -181,8 +181,8 @@ void cmu_wait_for_osc_ready(enum cmu_osc osc)
 	case LFRCO:
 		while ((CMU_STATUS & CMU_STATUS_LFRCORDY) == 0);
 	break;
-	case ULFRCO:
-		/* TODO: but how? */
+	case USHFRCO:
+		while ((CMU_STATUS & CMU_STATUS_USHFRCORDY) == 0);
 	break;
 	case HFXO:
 		while ((CMU_STATUS & CMU_STATUS_HFXORDY) == 0);
@@ -239,4 +239,40 @@ enum cmu_osc cmu_get_hfclk_source(void)
 
 	/* never reached */
 	return (enum cmu_osc) -1;
+}
+
+void cmu_set_usbclk_source(enum cmu_osc osc)
+{
+	switch (osc) {
+	case LFXO:
+		CMU_CMD = CMU_CMD_USBCCLKSEL_LFXO;
+    break;
+	case LFRCO:
+		CMU_CMD = CMU_CMD_USBCCLKSEL_LFRCO;
+    break;
+	case USHFRCO:
+		CMU_CMD = CMU_CMD_USBCCLKSEL_USHFRCO;
+    break;
+	default:
+		/* not applicable */
+		return;
+	}
+}
+
+void cmu_wait_for_usbclk_selected(enum cmu_osc osc)
+{
+	switch (osc) {
+	case LFXO:
+		while((CMU_STATUS & CMU_STATUS_USBCLFXOSEL) == 0);
+    break;
+	case LFRCO:
+		while((CMU_STATUS & CMU_STATUS_USBCLFRCOSEL) == 0);
+    break;
+	case USHFRCO:
+		while((CMU_STATUS & CMU_STATUS_USBCUSHFRCOSEL) == 0);
+    break;
+	default:
+		/* not applicable */
+		return;
+	}
 }

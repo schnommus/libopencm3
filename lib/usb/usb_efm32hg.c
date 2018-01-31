@@ -47,33 +47,30 @@ static void efm32hg_set_address(usbd_device *usbd_dev, uint8_t addr)
 /** Initialize the USB device controller hardware of the EFM32HG. */
 static usbd_device *efm32hg_usbd_init(void)
 {
-    CMU_HFCORECLKEN0 = CMU_HFCORECLKEN0_LE | CMU_HFCORECLKEN0_USB | CMU_HFCORECLKEN0_USBC;
+    /* Enable peripheral clocks required for USB */
+    cmu_periph_clock_enable(CMU_USB);
+    cmu_periph_clock_enable(CMU_USBC);
+    cmu_periph_clock_enable(CMU_LE);
 
     /* Select LFRCO as LFCCLK clock */
-    CMU_LFCLKSEL = (CMU_LFCLKSEL & ~0x30UL) | (0x1 /* LFRCO */ << 4 /* LFC */);
+    CMU_LFCLKSEL = CMU_LFCLKSEL_LFC_LFRCO;
 
-    CMU_LFCCLKEN0 |= CMU_LFCCLKEN0_USBLE;
+    /* Enable the USBLE peripheral clock (sits on LFCCLK) */
+    cmu_periph_clock_enable(CMU_USBLE);
 
-    CMU_LFCLKSEL = (CMU_LFCLKSEL & ~CMU_LFCLKSEL_LFC_MASK) | CMU_LFCLKSEL_LFC_LFRCO;
-    CMU_LFCCLKEN0 |= CMU_LFCCLKEN0_USBLE;
-
-    // Calibrate USB based on communications
+    /* Calibrate USB based on communications */
     CMU_USHFRCOCONF = CMU_USHFRCOCONF_BAND_48MHZ;
 
-    // Enable USHFRCO Clock Recovery mode.
+    /* Enable USHFRCO Clock Recovery mode. */
     CMU_USBCRCTRL |= CMU_USBCRCTRL_EN;
 
     /* Select USHFRCO as clock source for USB */
-    CMU_OSCENCMD = CMU_OSCENCMD_USHFRCOEN;
-    while (!(CMU_STATUS & CMU_STATUS_USHFRCORDY))
-        ;
+    cmu_osc_on(USHFRCO);
+    cmu_wait_for_osc_ready(USHFRCO);
 
-    /* Switch oscillator */
-    CMU_CMD = CMU_CMD_USBCCLKSEL_USHFRCO;
-
-    /* Wait until clock is activated */
-    while ((CMU_STATUS & CMU_STATUS_USBCUSHFRCOSEL) == 0)
-        ;
+    /* Set up the USB clock source */
+    cmu_set_usbclk_source(USHFRCO);
+    cmu_wait_for_usbclk_selected(USHFRCO);
 
     /* Turn on Low Energy Mode (LEM) features. */
     USB_CTRL = USB_CTRL_LEMOSCCTRL_GATE | USB_CTRL_LEMIDLEEN | USB_CTRL_LEMPHYCTRL;
