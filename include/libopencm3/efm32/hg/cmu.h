@@ -658,7 +658,6 @@ void cmu_osc_off(enum cmu_osc osc);
 bool cmu_osc_ready_flag(enum cmu_osc osc);
 void cmu_wait_for_osc_ready(enum cmu_osc osc);
 void cmu_set_hfclk_source(enum cmu_osc osc);
-void cmu_set_usbclk_source(enum cmu_osc osc);
 enum cmu_osc cmu_get_hfclk_source(void);
 
 void cmu_set_usbclk_source(enum cmu_osc osc);
