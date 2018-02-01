@@ -98,26 +98,8 @@ static usbd_device *efm32hg_usbd_init(void)
     /* Setup full speed device */
     USB_DCFG = (USB_DCFG & ~USB_DCFG_DEVSPD_MASK) | USB_DCFG_DEVSPD_FS;
 
-    /* Stall on non-zero len status OUT packets (ctrl transfers). */
-    USB_DCFG |= USB_DCFG_NZSTSOUTHSHK;
-
-    /* Set periodic frame interval to 80% */
-    USB_DCFG &= ~USB_DCFG_PERFRINT_MASK;
-
-    USB_GAHBCFG = (USB_GAHBCFG & ~USB_GAHBCFG_HBSTLEN_MASK) | USB_GAHBCFG_HBSTLEN_SINGLE;
-
-    /* Ignore frame numbers on ISO transfers. */
-    USB_DCTL = (USB_DCTL & ~DCTL_WO_BITMASK) | USB_DCTL_IGNRFRMNUM;
-
     /* Set Rx FIFO size */
     USB_GRXFSIZ = efm32hg_usb_driver.rx_fifo_size;
-
-    /* Set Tx EP0 FIFO size */
-    const uint32_t ep_tx_fifo_size = 64;
-    uint32_t address = efm32hg_usb_driver.rx_fifo_size;
-    uint32_t depth = ep_tx_fifo_size;
-    USB_GNPTXFSIZ = (depth << 16 /*NPTXFINEPTXF0DEP*/) | address /*NPTXFSTADDR*/;
-
     _usbd_dev.fifo_mem_top = efm32hg_usb_driver.rx_fifo_size;
 
     /* Connect */
@@ -125,11 +107,12 @@ static usbd_device *efm32hg_usbd_init(void)
 
     /* Unmask interrupts for TX and RX */
     USB_GAHBCFG |= USB_GAHBCFG_GLBLINTRMSK;
-    USB_GINTMSK = USB_GINTMSK_USBRSTMSK |
-                   USB_GINTMSK_ENUMDONEMSK | USB_GINTMSK_IEPINTMSK | USB_GINTMSK_OEPINTMSK
-        /*| USB_GINTMSK_WKUPINTMSK*/;
-    USB_DAINTMSK = USB_DAINTMSK_INEPMSK0 | USB_DAINTMSK_OUTEPMSK0;
-    USB_DOEPMSK = USB_DOEPMSK_SETUPMSK | USB_DOEPMSK_XFERCOMPLMSK | USB_DOEPMSK_STSPHSERCVDMSK;
+    USB_GINTMSK = USB_GINTMSK_ENUMDONEMSK |
+                  USB_GINTMSK_RXFLVLMSK |
+                  USB_GINTMSK_IEPINTMSK |
+                  USB_GINTMSK_USBSUSPMSK |
+                  USB_GINTMSK_WKUPINTMSK;
+    USB_DAINTMSK = 0xF;
     USB_DIEPMSK = USB_DIEPMSK_XFERCOMPLMSK;
 
     return &_usbd_dev;
