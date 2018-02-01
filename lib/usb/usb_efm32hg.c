@@ -263,10 +263,9 @@ static void efm32hg_ep_nak_set(usbd_device *usbd_dev, uint8_t addr, uint8_t nak)
 }
 
 static uint16_t efm32hg_ep_write_packet(usbd_device *usbd_dev, uint8_t addr,
-			      const void *buf, uint16_t len)
+			      const uint8_t *buf, uint16_t len)
 {
 	(void)usbd_dev;
-	const uint32_t *buf32 = buf;
 	int i;
 
 	addr &= 0x7F;
@@ -284,30 +283,36 @@ static uint16_t efm32hg_ep_write_packet(usbd_device *usbd_dev, uint8_t addr,
 
 	/* Copy buffer to endpoint FIFO, note - memcpy does not work */
 	for (i = len; i > 0; i -= 4) {
-		*fifo++ = *buf32++;
+        /* buf is sometimes not word-aligned */
+		*fifo++ =
+            buf[0] | buf[1] << 8 | buf[2] << 16 | buf[3] << 24;
+        buf += 4;
 	}
 
 	return len;
 }
 
 static uint16_t efm32hg_ep_read_packet(usbd_device *usbd_dev, uint8_t addr,
-				  void *buf, uint16_t len)
+				  uint8_t *buf, uint16_t len)
 {
 	int i;
-	uint32_t *buf32 = buf;
-	uint32_t extra;
+	uint32_t word;
 
 	len = MIN(len, usbd_dev->rxbcnt);
 	usbd_dev->rxbcnt -= len;
 
 	volatile uint32_t *fifo = USB_FIFOxD(addr);
 	for (i = len; i >= 4; i -= 4) {
-		*buf32++ = *fifo++;
+        /* buf is not always word-aligned */
+		uint32_t word = *fifo++;
+        memcpy(buf, &word, 4);
+        buf += 4;
 	}
 
+    /* If there are any bytes left */
 	if (i) {
-		extra = *fifo++;
-		memcpy(buf32, &extra, i);
+		word = *fifo++;
+		memcpy(buf, &word, i);
 	}
 
 	USB_DOEPx_TSIZ(addr) = usbd_dev->doeptsiz[addr];
