@@ -131,8 +131,7 @@ static uint16_t build_config_descriptor(usbd_device *usbd_dev,
 
 	/* Fill in wTotalLength.
      * Note that tmpbuf is sometimes not halfword-aligned */
-	*(tmpbuf + 2) = (totallen & 0xFF00) >> 8;
-	*(tmpbuf + 3) = (totallen & 0x00FF);
+	memcpy((tmpbuf + 2), &totallen, sizeof(uint16_t));
 
 	return total;
 }
