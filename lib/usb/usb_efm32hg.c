@@ -72,8 +72,8 @@ static usbd_device *efm32hg_usbd_init(void)
     cmu_set_usbclk_source(USHFRCO);
     cmu_wait_for_usbclk_selected(USHFRCO);
 
-    /* Turn on Low Energy Mode (LEM) features. */
-    USB_CTRL = USB_CTRL_LEMOSCCTRL_GATE | USB_CTRL_LEMIDLEEN | USB_CTRL_LEMPHYCTRL;
+    /* Turn off all Low Energy Mode (LEM) features. */
+    USB_CTRL = 0;
 
     /* Initialize USB core */
 
