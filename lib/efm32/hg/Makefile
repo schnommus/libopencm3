@@ -42,7 +42,7 @@ ARFLAGS		= rcs
 OBJS		=
 
 OBJS		= gpio.o cmu.o
-OBJS		+= usb.o usb_control.o usb_standard.o usb_efm32hg.o
+OBJS		+= usb.o usb_control.o usb_standard.o usb_msc.o usb_efm32hg.o
 
 VPATH += ../../usb:../:../../cm3
 
