@@ -47,75 +47,71 @@ static void efm32hg_set_address(usbd_device *usbd_dev, uint8_t addr)
 /** Initialize the USB device controller hardware of the EFM32HG. */
 static usbd_device *efm32hg_usbd_init(void)
 {
-    /* Enable peripheral clocks required for USB */
-    cmu_periph_clock_enable(CMU_USB);
-    cmu_periph_clock_enable(CMU_USBC);
-    cmu_periph_clock_enable(CMU_LE);
+	/* Enable peripheral clocks required for USB */
+	cmu_periph_clock_enable(CMU_USB);
+	cmu_periph_clock_enable(CMU_USBC);
+	cmu_periph_clock_enable(CMU_LE);
 
-    /* Select LFRCO as LFCCLK clock */
-    CMU_LFCLKSEL = CMU_LFCLKSEL_LFC_LFRCO;
+	/* Select LFRCO as LFCCLK clock */
+	CMU_LFCLKSEL = CMU_LFCLKSEL_LFC_LFRCO;
 
-    /* Enable the USBLE peripheral clock (sits on LFCCLK) */
-    cmu_periph_clock_enable(CMU_USBLE);
+	/* Enable the USBLE peripheral clock (sits on LFCCLK) */
+	cmu_periph_clock_enable(CMU_USBLE);
 
-    /* Calibrate USB based on communications */
-    CMU_USHFRCOCONF = CMU_USHFRCOCONF_BAND_48MHZ;
+	/* Calibrate USB based on communications */
+	CMU_USHFRCOCONF = CMU_USHFRCOCONF_BAND_48MHZ;
 
-    /* Enable USHFRCO Clock Recovery mode. */
-    CMU_USBCRCTRL |= CMU_USBCRCTRL_EN;
+	/* Enable USHFRCO Clock Recovery mode. */
+	CMU_USBCRCTRL |= CMU_USBCRCTRL_EN;
 
-    /* Select USHFRCO as clock source for USB */
-    cmu_osc_on(USHFRCO);
-    cmu_wait_for_osc_ready(USHFRCO);
+	/* Select USHFRCO as clock source for USB */
+	cmu_osc_on(USHFRCO);
+	cmu_wait_for_osc_ready(USHFRCO);
 
-    /* Set up the USB clock source */
-    cmu_set_usbclk_source(USHFRCO);
-    cmu_wait_for_usbclk_selected(USHFRCO);
+	/* Set up the USB clock source */
+	cmu_set_usbclk_source(USHFRCO);
+	cmu_wait_for_usbclk_selected(USHFRCO);
 
-    /* Turn off all Low Energy Mode (LEM) features. */
-    USB_CTRL = 0;
+	/* Turn off all Low Energy Mode (LEM) features. */
+	USB_CTRL = 0;
 
-    /* Initialize USB core */
+	/* Initialize USB core */
 
-    USB_ROUTE = USB_ROUTE_PHYPEN; /* Enable PHY pins.  */
+	USB_ROUTE = USB_ROUTE_PHYPEN; /* Enable PHY pins.  */
 
-    USB_PCGCCTL &= ~USB_PCGCCTL_STOPPCLK;
-    USB_PCGCCTL &= ~(USB_PCGCCTL_PWRCLMP | USB_PCGCCTL_RSTPDWNMODULE);
+	USB_PCGCCTL &= ~USB_PCGCCTL_STOPPCLK;
+	USB_PCGCCTL &= ~(USB_PCGCCTL_PWRCLMP | USB_PCGCCTL_RSTPDWNMODULE);
 
-    /* Core Soft Reset */
-    {
-        USB_GRSTCTL |= USB_GRSTCTL_CSFTRST;
-        while (USB_GRSTCTL & USB_GRSTCTL_CSFTRST)
-        {
-        }
+	/* Core Soft Reset */
+	{
+		USB_GRSTCTL |= USB_GRSTCTL_CSFTRST;
+		while (USB_GRSTCTL & USB_GRSTCTL_CSFTRST);
 
-        /* Wait for AHB master IDLE state. */
-        while (!(USB_GRSTCTL & USB_GRSTCTL_AHBIDLE))
-        {
-        }
-    }
+		/* Wait for AHB master IDLE state. */
+		while (!(USB_GRSTCTL & USB_GRSTCTL_AHBIDLE));
+	}
 
-    /* Setup full speed device */
-    USB_DCFG = (USB_DCFG & ~USB_DCFG_DEVSPD_MASK) | USB_DCFG_DEVSPD_FS;
+	/* Setup full speed device */
+	USB_DCFG = (USB_DCFG & ~USB_DCFG_DEVSPD_MASK) | USB_DCFG_DEVSPD_FS;
 
-    /* Set Rx FIFO size */
-    USB_GRXFSIZ = efm32hg_usb_driver.rx_fifo_size;
-    _usbd_dev.fifo_mem_top = efm32hg_usb_driver.rx_fifo_size;
+	/* Set Rx FIFO size */
+	USB_GRXFSIZ = efm32hg_usb_driver.rx_fifo_size;
+	_usbd_dev.fifo_mem_top = efm32hg_usb_driver.rx_fifo_size;
 
-    /* Connect */
-    USB_DCTL &= ~(DCTL_WO_BITMASK | USB_DCTL_SFTDISCON);
+	/* Connect */
+	USB_DCTL &= ~(DCTL_WO_BITMASK | USB_DCTL_SFTDISCON);
 
-    /* Unmask interrupts for TX and RX */
-    USB_GAHBCFG |= USB_GAHBCFG_GLBLINTRMSK;
-    USB_GINTMSK = USB_GINTMSK_ENUMDONEMSK |
-                  USB_GINTMSK_RXFLVLMSK |
-                  USB_GINTMSK_IEPINTMSK |
-                  USB_GINTMSK_USBSUSPMSK |
-                  USB_GINTMSK_WKUPINTMSK;
-    USB_DAINTMSK = 0xF;
-    USB_DIEPMSK = USB_DIEPMSK_XFERCOMPLMSK;
+	/* Unmask interrupts for TX and RX */
+	USB_GAHBCFG |= USB_GAHBCFG_GLBLINTRMSK;
+	USB_GINTMSK = USB_GINTMSK_ENUMDONEMSK |
+		USB_GINTMSK_RXFLVLMSK |
+		USB_GINTMSK_IEPINTMSK |
+		USB_GINTMSK_USBSUSPMSK |
+		USB_GINTMSK_WKUPINTMSK;
+	USB_DAINTMSK = 0xF;
+	USB_DIEPMSK = USB_DIEPMSK_XFERCOMPLMSK;
 
-    return &_usbd_dev;
+	return &_usbd_dev;
 }
 
 static void efm32hg_ep_setup(usbd_device *usbd_dev, uint8_t addr, uint8_t type,
@@ -283,10 +279,10 @@ static uint16_t efm32hg_ep_write_packet(usbd_device *usbd_dev, uint8_t addr,
 
 	/* Copy buffer to endpoint FIFO, note - memcpy does not work */
 	for (i = len; i > 0; i -= 4) {
-        /* buf is sometimes not word-aligned */
+		/* buf is sometimes not word-aligned */
 		*fifo++ =
-            buf[0] | buf[1] << 8 | buf[2] << 16 | buf[3] << 24;
-        buf += 4;
+			buf[0] | buf[1] << 8 | buf[2] << 16 | buf[3] << 24;
+		buf += 4;
 	}
 
 	return len;
@@ -303,13 +299,13 @@ static uint16_t efm32hg_ep_read_packet(usbd_device *usbd_dev, uint8_t addr,
 
 	volatile uint32_t *fifo = USB_FIFOxD(addr);
 	for (i = len; i >= 4; i -= 4) {
-        /* buf is not always word-aligned */
+		/* buf is not always word-aligned */
 		uint32_t word = *fifo++;
-        memcpy(buf, &word, 4);
-        buf += 4;
+		memcpy(buf, &word, 4);
+		buf += 4;
 	}
 
-    /* If there are any bytes left */
+	/* If there are any bytes left */
 	if (i) {
 		word = *fifo++;
 		memcpy(buf, &word, i);
