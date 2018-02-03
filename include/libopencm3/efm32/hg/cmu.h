@@ -24,38 +24,38 @@
 #include <libopencm3/efm32/memorymap.h>
 #include <libopencm3/cm3/common.h>
 
-#define CMU_CTRL              MMIO32(CMU_BASE + 0x000)
-#define CMU_HFCORECLKDIV      MMIO32(CMU_BASE + 0x004)
-#define CMU_HFPERCLKDIV       MMIO32(CMU_BASE + 0x008)
-#define CMU_HFRCOCTRL         MMIO32(CMU_BASE + 0x00C)
-#define CMU_LFRCOCTRL         MMIO32(CMU_BASE + 0x010)
-#define CMU_AUXHFRCOCTRL      MMIO32(CMU_BASE + 0x014)
-#define CMU_CALCTRL           MMIO32(CMU_BASE + 0x018)
-#define CMU_CALCNT            MMIO32(CMU_BASE + 0x01C)
-#define CMU_OSCENCMD          MMIO32(CMU_BASE + 0x020)
-#define CMU_CMD               MMIO32(CMU_BASE + 0x024)
-#define CMU_LFCLKSEL          MMIO32(CMU_BASE + 0x028)
-#define CMU_STATUS            MMIO32(CMU_BASE + 0x02C)
-#define CMU_IF                MMIO32(CMU_BASE + 0x030)
-#define CMU_IFS               MMIO32(CMU_BASE + 0x034)
-#define CMU_IFC               MMIO32(CMU_BASE + 0x038)
-#define CMU_IEN               MMIO32(CMU_BASE + 0x03C)
-#define CMU_HFCORECLKEN0      MMIO32(CMU_BASE + 0x040)
-#define CMU_HFPERCLKEN0       MMIO32(CMU_BASE + 0x044)
-#define CMU_SYNCBUSY          MMIO32(CMU_BASE + 0x050)
-#define CMU_FREEZE            MMIO32(CMU_BASE + 0x054)
-#define CMU_LFACLKEN0         MMIO32(CMU_BASE + 0x058)
-#define CMU_LFBCLKEN0         MMIO32(CMU_BASE + 0x060)
-#define CMU_LFCCLKEN0         MMIO32(CMU_BASE + 0x064)
-#define CMU_LFAPRESC0         MMIO32(CMU_BASE + 0x068)
-#define CMU_LFBPRESC0         MMIO32(CMU_BASE + 0x070)
-#define CMU_PCNTCTRL          MMIO32(CMU_BASE + 0x078)
-#define CMU_ROUTE             MMIO32(CMU_BASE + 0x080)
-#define CMU_LOCK              MMIO32(CMU_BASE + 0x084)
-#define CMU_USBCRCTRL         MMIO32(CMU_BASE + 0x0D0)
-#define CMU_USHFRCOCTRL       MMIO32(CMU_BASE + 0x0D4)
-#define CMU_USHFRCOTUNE       MMIO32(CMU_BASE + 0x0D8)
-#define CMU_USHFRCOCONF       MMIO32(CMU_BASE + 0x0DC)
+#define CMU_CTRL			MMIO32(CMU_BASE + 0x000)
+#define CMU_HFCORECLKDIV		MMIO32(CMU_BASE + 0x004)
+#define CMU_HFPERCLKDIV			MMIO32(CMU_BASE + 0x008)
+#define CMU_HFRCOCTRL			MMIO32(CMU_BASE + 0x00C)
+#define CMU_LFRCOCTRL			MMIO32(CMU_BASE + 0x010)
+#define CMU_AUXHFRCOCTR			MMIO32(CMU_BASE + 0x014)
+#define CMU_CALCTRL			MMIO32(CMU_BASE + 0x018)
+#define CMU_CALCNT			MMIO32(CMU_BASE + 0x01C)
+#define CMU_OSCENCMD			MMIO32(CMU_BASE + 0x020)
+#define CMU_CMD				MMIO32(CMU_BASE + 0x024)
+#define CMU_LFCLKSEL			MMIO32(CMU_BASE + 0x028)
+#define CMU_STATUS			MMIO32(CMU_BASE + 0x02C)
+#define CMU_IF				MMIO32(CMU_BASE + 0x030)
+#define CMU_IFS				MMIO32(CMU_BASE + 0x034)
+#define CMU_IFC				MMIO32(CMU_BASE + 0x038)
+#define CMU_IEN				MMIO32(CMU_BASE + 0x03C)
+#define CMU_HFCORECLKEN0		MMIO32(CMU_BASE + 0x040)
+#define CMU_HFPERCLKEN0			MMIO32(CMU_BASE + 0x044)
+#define CMU_SYNCBUSY			MMIO32(CMU_BASE + 0x050)
+#define CMU_FREEZE			MMIO32(CMU_BASE + 0x054)
+#define CMU_LFACLKEN0			MMIO32(CMU_BASE + 0x058)
+#define CMU_LFBCLKEN0			MMIO32(CMU_BASE + 0x060)
+#define CMU_LFCCLKEN0			MMIO32(CMU_BASE + 0x064)
+#define CMU_LFAPRESC0			MMIO32(CMU_BASE + 0x068)
+#define CMU_LFBPRESC0			MMIO32(CMU_BASE + 0x070)
+#define CMU_PCNTCTRL			MMIO32(CMU_BASE + 0x078)
+#define CMU_ROUTE			MMIO32(CMU_BASE + 0x080)
+#define CMU_LOCK			MMIO32(CMU_BASE + 0x084)
+#define CMU_USBCRCTRL			MMIO32(CMU_BASE + 0x0D0)
+#define CMU_USHFRCOCTRL			MMIO32(CMU_BASE + 0x0D4)
+#define CMU_USHFRCOTUNE			MMIO32(CMU_BASE + 0x0D8)
+#define CMU_USHFRCOCONF			MMIO32(CMU_BASE + 0x0DC)
 
 /* CMU_CTRL */
 #define CMU_CTRL_CLKOUTSEL1_SHIFT	(23)
@@ -70,7 +70,7 @@
 #define CMU_CTRL_CLKOUTSEL1_LFRCOQ	CMU_CTRL_CLKOUTSEL1(5)
 #define CMU_CTRL_CLKOUTSEL1_HFRCOQ	CMU_CTRL_CLKOUTSEL1(6)
 #define CMU_CTRL_CLKOUTSEL1_AUXHFRCOQ	CMU_CTRL_CLKOUTSEL1(7)
-#define CMU_CTRL_CLKOUTSEL1_USHFRCO     CMU_CTRL_CLKOUTSEL1(8)
+#define CMU_CTRL_CLKOUTSEL1_USHFRCO	CMU_CTRL_CLKOUTSEL1(8)
 
 #define CMU_CTRL_CLKOUTSEL0_SHIFT	(20)
 #define CMU_CTRL_CLKOUTSEL0_MASK	(0x7 << CMU_CTRL_CLKOUTSEL0_SHIFT)
@@ -200,7 +200,7 @@
 	CMU_HFCORECLKDIV_HFCORECLKDIV_HFCLK512
 
 /* CMU_HFPERCLKDIV */
-#define CMU_HFPERCLKDIV_HFPERCLKEN (1 << 8)
+#define CMU_HFPERCLKDIV_HFPERCLKEN		(1 << 8)
 
 #define CMU_HFPERCLKDIV_HFPERCLKDIV_SHIFT	(0)
 #define CMU_HFPERCLKDIV_HFPERCLKDIV_MASK	\
@@ -265,7 +265,7 @@
 /* CMU_LFRCOCTRL */
 #define CMU_LFRCOCTRL_TUNING_SHIFT	(0)
 #define CMU_LFRCOCTRL_TUNING_MASK	(0xFF << CMU_LFRCOCTRL_TUNING_SHIFT)
-#define CMU_LFRCOCTRL_TUNING(v)			\
+#define CMU_LFRCOCTRL_TUNING(v)		\
 	(((v) << CMU_LFRCOCTRL_TUNING_SHIFT) & CMU_LFRCOCTRL_TUNING_MASK)
 
 /* CMU_AUXHFRCOCTRL */
@@ -298,7 +298,7 @@
 #define CMU_CALCTRL_DOWNSEL_HFRCO	CMU_CALCTRL_DOWNSEL(3)
 #define CMU_CALCTRL_DOWNSEL_LFRCO	CMU_CALCTRL_DOWNSEL(4)
 #define CMU_CALCTRL_DOWNSEL_AUXHFRCO	CMU_CALCTRL_DOWNSEL(5)
-#define CMU_CALCTRL_DOWNSEL_USHFRCO 	CMU_CALCTRL_DOWNSEL(6)
+#define CMU_CALCTRL_DOWNSEL_USHFRCO	CMU_CALCTRL_DOWNSEL(6)
 
 #define CMU_CALCTRL_UPSEL_SHIFT		(3)
 #define CMU_CALCTRL_UPSEL_MASK		(0x7 << CMU_CALCTRL_UPSEL_SHIFT)
@@ -319,18 +319,18 @@
 
 /* CMU_OSCENCMD */
 /* Bits 31:12 - Reserved */
-#define CMU_OSCENCMD_USHFRCODIS         (1 << 11)
-#define CMU_OSCENCMD_USHFRCOEN          (1 << 10)
-#define CMU_OSCENCMD_LFXODIS            (1 << 9)
-#define CMU_OSCENCMD_LFXOEN             (1 << 8)
-#define CMU_OSCENCMD_LFRCODIS           (1 << 7)
-#define CMU_OSCENCMD_LFRCOEN            (1 << 6)
-#define CMU_OSCENCMD_AUXHFRCODIS        (1 << 5)
-#define CMU_OSCENCMD_AUXHFRCOEN         (1 << 4)
-#define CMU_OSCENCMD_HFXODIS            (1 << 3)
-#define CMU_OSCENCMD_HFXOEN             (1 << 2)
-#define CMU_OSCENCMD_HFRCODIS           (1 << 1)
-#define CMU_OSCENCMD_HFRCOEN		    (1 << 0)
+#define CMU_OSCENCMD_USHFRCODIS		(1 << 11)
+#define CMU_OSCENCMD_USHFRCOEN		(1 << 10)
+#define CMU_OSCENCMD_LFXODIS		(1 << 9)
+#define CMU_OSCENCMD_LFXOEN		(1 << 8)
+#define CMU_OSCENCMD_LFRCODIS		(1 << 7)
+#define CMU_OSCENCMD_LFRCOEN		(1 << 6)
+#define CMU_OSCENCMD_AUXHFRCODIS	(1 << 5)
+#define CMU_OSCENCMD_AUXHFRCOEN		(1 << 4)
+#define CMU_OSCENCMD_HFXODIS		(1 << 3)
+#define CMU_OSCENCMD_HFXOEN		(1 << 2)
+#define CMU_OSCENCMD_HFRCODIS		(1 << 1)
+#define CMU_OSCENCMD_HFRCOEN		(1 << 0)
 
 /* CMU_CMD */
 #define CMU_CMD_USBCCLKSEL_SHIFT	(5)
@@ -341,170 +341,170 @@
 #define CMU_CMD_USBCCLKSEL_LFRCO	CMU_CMD_USBCCLKSEL(3)
 #define CMU_CMD_USBCCLKSEL_USHFRCO	CMU_CMD_USBCCLKSEL(4)
 
-#define CMU_CMD_CALSTOP		(1 << 4)
-#define CMU_CMD_CALSTART	(1 << 3)
+#define CMU_CMD_CALSTOP			(1 << 4)
+#define CMU_CMD_CALSTART		(1 << 3)
 
-#define CMU_CMD_HFCLKSEL_SHIFT	(0)
-#define CMU_CMD_HFCLKSEL_MASK	(0x7 << CMU_CMD_HFCLKSEL_SHIFT)
-#define CMU_CMD_HFCLKSEL(v)	\
+#define CMU_CMD_HFCLKSEL_SHIFT		(0)
+#define CMU_CMD_HFCLKSEL_MASK		(0x7 << CMU_CMD_HFCLKSEL_SHIFT)
+#define CMU_CMD_HFCLKSEL(v)		\
 	(((v) << CMU_CMD_HFCLKSEL_SHIFT) & CMU_CMD_HFCLKSEL_MASK)
-#define CMU_CMD_HFCLKSEL_HFRCO	CMU_CMD_HFCLKSEL(1)
-#define CMU_CMD_HFCLKSEL_HFXO	CMU_CMD_HFCLKSEL(2)
-#define CMU_CMD_HFCLKSEL_LFRCO	CMU_CMD_HFCLKSEL(3)
-#define CMU_CMD_HFCLKSEL_LFXO	CMU_CMD_HFCLKSEL(4)
+#define CMU_CMD_HFCLKSEL_HFRCO		CMU_CMD_HFCLKSEL(1)
+#define CMU_CMD_HFCLKSEL_HFXO		CMU_CMD_HFCLKSEL(2)
+#define CMU_CMD_HFCLKSEL_LFRCO		CMU_CMD_HFCLKSEL(3)
+#define CMU_CMD_HFCLKSEL_LFXO		CMU_CMD_HFCLKSEL(4)
 
 /* CMU_LFCLKSEL */
 /* Bits 31:21 - Reserved */
-#define CMU_LFCLKSEL_LFBE               (1 << 20)
+#define CMU_LFCLKSEL_LFBE		(1 << 20)
 /* Bits 19:17 - Reserved */
-#define CMU_LFCLKSEL_LFAE               (1 << 16)
+#define CMU_LFCLKSEL_LFAE		(1 << 16)
 /* Bits 15:6 - Reserved */
 
-#define CMU_LFCLKSEL_LFC_SHIFT	(4)
-#define CMU_LFCLKSEL_LFC_MASK	(0x3 << CMU_LFCLKSEL_LFC_SHIFT)
-#define CMU_LFCLKSEL_LFC(v)	\
+#define CMU_LFCLKSEL_LFC_SHIFT		(4)
+#define CMU_LFCLKSEL_LFC_MASK		(0x3 << CMU_LFCLKSEL_LFC_SHIFT)
+#define CMU_LFCLKSEL_LFC(v)		\
 	(((v) << CMU_LFCLKSEL_LFC_SHIFT) & CMU_LFCLKSEL_LFC_MASK)
-#define CMU_LFCLKSEL_LFC_DISABLED  CMU_LFCLKSEL_LFC(0)
-#define CMU_LFCLKSEL_LFC_LFRCO     CMU_LFCLKSEL_LFC(1)
-#define CMU_LFCLKSEL_LFC_LFXO      CMU_LFCLKSEL_LFC(2)
+#define CMU_LFCLKSEL_LFC_DISABLED	CMU_LFCLKSEL_LFC(0)
+#define CMU_LFCLKSEL_LFC_LFRCO		CMU_LFCLKSEL_LFC(1)
+#define CMU_LFCLKSEL_LFC_LFXO		CMU_LFCLKSEL_LFC(2)
 
-#define CMU_LFCLKSEL_LFB_SHIFT	(2)
-#define CMU_LFCLKSEL_LFB_MASK	(0x3 << CMU_LFCLKSEL_LFB_SHIFT)
-#define CMU_LFCLKSEL_LFB(v)	\
+#define CMU_LFCLKSEL_LFB_SHIFT		(2)
+#define CMU_LFCLKSEL_LFB_MASK		(0x3 << CMU_LFCLKSEL_LFB_SHIFT)
+#define CMU_LFCLKSEL_LFB(v)		\
 	(((v) << CMU_LFCLKSEL_LFB_SHIFT) & CMU_LFCLKSEL_LFB_MASK)
 
-#define CMU_LFCLKSEL_LFA_SHIFT	(0)
-#define CMU_LFCLKSEL_LFA_MASK	(0x3 << CMU_LFCLKSEL_LFA_SHIFT)
-#define CMU_LFCLKSEL_LFA(v)	\
+#define CMU_LFCLKSEL_LFA_SHIFT		(0)
+#define CMU_LFCLKSEL_LFA_MASK		(0x3 << CMU_LFCLKSEL_LFA_SHIFT)
+#define CMU_LFCLKSEL_LFA(v)		\
 	(((v) << CMU_LFCLKSEL_LFA_SHIFT) & CMU_LFCLKSEL_LFA_MASK)
 
 /* CMU_STATUS */
 /* Bits 31:27 - Reserved */
-#define CMU_STATUS_USHFRCODIV2SEL     (1 << 26)
+#define CMU_STATUS_USHFRCODIV2SEL	(1 << 26)
 /* Bits 25:24 - Reserved */
-#define CMU_STATUS_USHFRCOSUSPEND     (1 << 23)
-#define CMU_STATUS_USHFRCORDY         (1 << 22)
-#define CMU_STATUS_USHFRCOENS         (1 << 21)
-#define CMU_STATUS_USBCHFCLKSYNC      (1 << 20)
+#define CMU_STATUS_USHFRCOSUSPEND	(1 << 23)
+#define CMU_STATUS_USHFRCORDY		(1 << 22)
+#define CMU_STATUS_USHFRCOENS		(1 << 21)
+#define CMU_STATUS_USBCHFCLKSYNC	(1 << 20)
 /* Bit 19 - Reserved */
-#define CMU_STATUS_USBCUSHFRCOSEL     (1 << 18)
-#define CMU_STATUS_USBCLFRCOSEL       (1 << 17)
-#define CMU_STATUS_USBCLFXOSEL        (1 << 16)
+#define CMU_STATUS_USBCUSHFRCOSEL	(1 << 18)
+#define CMU_STATUS_USBCLFRCOSEL		(1 << 17)
+#define CMU_STATUS_USBCLFXOSEL		(1 << 16)
 /* Bit 15 - Reserved */
-#define CMU_STATUS_CALBSY             (1 << 14)
-#define CMU_STATUS_LFXOSEL            (1 << 13)
-#define CMU_STATUS_LFRCOSEL           (1 << 12)
-#define CMU_STATUS_HFXOSEL            (1 << 11)
-#define CMU_STATUS_HFRCOSEL           (1 << 10)
-#define CMU_STATUS_LFXORDY            (1 << 9)
-#define CMU_STATUS_LFXOENS            (1 << 8)
-#define CMU_STATUS_LFRCORDY           (1 << 7)
-#define CMU_STATUS_LFRCOENS           (1 << 6)
-#define CMU_STATUS_AUXHFRCORDY        (1 << 5)
-#define CMU_STATUS_AUXHFRCOENS        (1 << 4)
-#define CMU_STATUS_HFXORDY            (1 << 3)
-#define CMU_STATUS_HFXOENS            (1 << 2)
-#define CMU_STATUS_HFRCORDY           (1 << 1)
-#define CMU_STATUS_HFRCOENS           (1 << 0)
+#define CMU_STATUS_CALBSY		(1 << 14)
+#define CMU_STATUS_LFXOSEL		(1 << 13)
+#define CMU_STATUS_LFRCOSEL		(1 << 12)
+#define CMU_STATUS_HFXOSEL		(1 << 11)
+#define CMU_STATUS_HFRCOSEL		(1 << 10)
+#define CMU_STATUS_LFXORDY		(1 << 9)
+#define CMU_STATUS_LFXOENS		(1 << 8)
+#define CMU_STATUS_LFRCORDY		(1 << 7)
+#define CMU_STATUS_LFRCOENS		(1 << 6)
+#define CMU_STATUS_AUXHFRCORDY		(1 << 5)
+#define CMU_STATUS_AUXHFRCOENS		(1 << 4)
+#define CMU_STATUS_HFXORDY		(1 << 3)
+#define CMU_STATUS_HFXOENS		(1 << 2)
+#define CMU_STATUS_HFRCORDY		(1 << 1)
+#define CMU_STATUS_HFRCOENS		(1 << 0)
 
 /* CMU_IF */
 /* Bits 31:10 - Reserved */
-#define CMU_IF_USBCHFOSCSEL   (1 << 9)
-#define CMU_IF_USHFRCORDY     (1 << 8)
+#define CMU_IF_USBCHFOSCSEL		(1 << 9)
+#define CMU_IF_USHFRCORDY		(1 << 8)
 /* Bit 7 - Reserved */
-#define CMU_IF_CALOF          (1 << 6)
-#define CMU_IF_CALRDY         (1 << 5)
-#define CMU_IF_AUXHFRCORDY    (1 << 4)
-#define CMU_IF_LFXORDY        (1 << 3)
-#define CMU_IF_LFRCORDY       (1 << 2)
-#define CMU_IF_HFXORDY        (1 << 1)
-#define CMU_IF_HFRCORDY       (1 << 0)
+#define CMU_IF_CALOF			(1 << 6)
+#define CMU_IF_CALRDY			(1 << 5)
+#define CMU_IF_AUXHFRCORDY		(1 << 4)
+#define CMU_IF_LFXORDY			(1 << 3)
+#define CMU_IF_LFRCORDY			(1 << 2)
+#define CMU_IF_HFXORDY			(1 << 1)
+#define CMU_IF_HFRCORDY			(1 << 0)
 
 /* CMU_IFS */
 /* Bits 31:10 - Reserved */
-#define CMU_IFS_USBCHFOSCSEL  (1 << 9)
-#define CMU_IFS_USHFRCORDY    (1 << 8)
+#define CMU_IFS_USBCHFOSCSEL		(1 << 9)
+#define CMU_IFS_USHFRCORDY		(1 << 8)
 /* Bit 7 - Reserved */
-#define CMU_IFS_CALOF         (1 << 6)
-#define CMU_IFS_CALRDY        (1 << 5)
-#define CMU_IFS_AUXHFRCORDY   (1 << 4)
-#define CMU_IFS_LFXORDY       (1 << 3)
-#define CMU_IFS_LFRCORDY      (1 << 2)
-#define CMU_IFS_HFXORDY       (1 << 1)
-#define CMU_IFS_HFRCORDY      (1 << 0)
+#define CMU_IFS_CALOF			(1 << 6)
+#define CMU_IFS_CALRDY			(1 << 5)
+#define CMU_IFS_AUXHFRCORDY		(1 << 4)
+#define CMU_IFS_LFXORDY			(1 << 3)
+#define CMU_IFS_LFRCORDY		(1 << 2)
+#define CMU_IFS_HFXORDY			(1 << 1)
+#define CMU_IFS_HFRCORDY		(1 << 0)
 
 /* CMU_IFC */
 /* Bits 31:10 - Reserved */
-#define CMU_IFC_USBCHFOSCSEL  (1 << 9)
-#define CMU_IFC_USHFRCORDY    (1 << 8)
+#define CMU_IFC_USBCHFOSCSEL		(1 << 9)
+#define CMU_IFC_USHFRCORDY		(1 << 8)
 /* Bit 7 - Reserved */
-#define CMU_IFC_CALOF         (1 << 6)
-#define CMU_IFC_CALRDY        (1 << 5)
-#define CMU_IFC_AUXHFRCORDY   (1 << 4)
-#define CMU_IFC_LFXORDY       (1 << 3)
-#define CMU_IFC_LFRCORDY      (1 << 2)
-#define CMU_IFC_HFXORDY       (1 << 1)
-#define CMU_IFC_HFRCORDY      (1 << 0)
+#define CMU_IFC_CALOF			(1 << 6)
+#define CMU_IFC_CALRDY			(1 << 5)
+#define CMU_IFC_AUXHFRCORDY		(1 << 4)
+#define CMU_IFC_LFXORDY			(1 << 3)
+#define CMU_IFC_LFRCORDY		(1 << 2)
+#define CMU_IFC_HFXORDY			(1 << 1)
+#define CMU_IFC_HFRCORDY		(1 << 0)
 
 /* CMU_IEN */
 /* Bits 31:10 - Reserved */
-#define CMU_IEN_USBCHFOSCSEL  (1 << 9)
-#define CMU_IEN_USHFRCORDY    (1 << 8)
+#define CMU_IEN_USBCHFOSCSEL		(1 << 9)
+#define CMU_IEN_USHFRCORDY		(1 << 8)
 /* Bit 7 - Reserved */
-#define CMU_IEN_CALOF         (1 << 6)
-#define CMU_IEN_CALRDY        (1 << 5)
-#define CMU_IEN_AUXHFRCORDY   (1 << 4)
-#define CMU_IEN_LFXORDY       (1 << 3)
-#define CMU_IEN_LFRCORDY      (1 << 2)
-#define CMU_IEN_HFXORDY       (1 << 1)
-#define CMU_IEN_HFRCORDY      (1 << 0)
+#define CMU_IEN_CALOF			(1 << 6)
+#define CMU_IEN_CALRDY			(1 << 5)
+#define CMU_IEN_AUXHFRCORDY		(1 << 4)
+#define CMU_IEN_LFXORDY			(1 << 3)
+#define CMU_IEN_LFRCORDY		(1 << 2)
+#define CMU_IEN_HFXORDY			(1 << 1)
+#define CMU_IEN_HFRCORDY		(1 << 0)
 
 /* CMU_HFCORECLKEN0 */
 /* Bits 31:5 - Reserved */
-#define CMU_HFCORECLKEN0_USB	(1 << 4)
-#define CMU_HFCORECLKEN0_USBC	(1 << 3)
-#define CMU_HFCORECLKEN0_LE	    (1 << 2)
-#define CMU_HFCORECLKEN0_DMA	(1 << 1)
-#define CMU_HFCORECLKEN0_AES	(1 << 0)
+#define CMU_HFCORECLKEN0_USB		(1 << 4)
+#define CMU_HFCORECLKEN0_USBC		(1 << 3)
+#define CMU_HFCORECLKEN0_LE		(1 << 2)
+#define CMU_HFCORECLKEN0_DMA		(1 << 1)
+#define CMU_HFCORECLKEN0_AES		(1 << 0)
 
 /* CMU_HFPERCLKEN0 */
 /* Bits 31:12 - Reserved */
-#define CMU_HFPERCLKEN0_I2C0	(1 << 11)
-#define CMU_HFPERCLKEN0_ADC0	(1 << 10)
-#define CMU_HFPERCLKEN0_VCMP	(1 << 9)
-#define CMU_HFPERCLKEN0_GPIO	(1 << 8)
-#define CMU_HFPERCLKEN0_IDAC0	(1 << 7)
-#define CMU_HFPERCLKEN0_PRS	    (1 << 6)
-#define CMU_HFPERCLKEN0_ACMP0	(1 << 5)
-#define CMU_HFPERCLKEN0_USART1	(1 << 4)
-#define CMU_HFPERCLKEN0_USART0	(1 << 3)
-#define CMU_HFPERCLKEN0_TIMER2	(1 << 2)
-#define CMU_HFPERCLKEN0_TIMER1	(1 << 1)
-#define CMU_HFPERCLKEN0_TIMER0	(1 << 0)
+#define CMU_HFPERCLKEN0_I2C0		(1 << 11)
+#define CMU_HFPERCLKEN0_ADC0		(1 << 10)
+#define CMU_HFPERCLKEN0_VCMP		(1 << 9)
+#define CMU_HFPERCLKEN0_GPIO		(1 << 8)
+#define CMU_HFPERCLKEN0_IDAC0		(1 << 7)
+#define CMU_HFPERCLKEN0_PRS		(1 << 6)
+#define CMU_HFPERCLKEN0_ACMP0		(1 << 5)
+#define CMU_HFPERCLKEN0_USART1		(1 << 4)
+#define CMU_HFPERCLKEN0_USART0		(1 << 3)
+#define CMU_HFPERCLKEN0_TIMER2		(1 << 2)
+#define CMU_HFPERCLKEN0_TIMER1		(1 << 1)
+#define CMU_HFPERCLKEN0_TIMER0		(1 << 0)
 
 /* CMU_SYNCBUSY */
 /* Bits 31:9 - Reserved */
-#define CMU_SYNCBUSY_LFCCLKEN0     (1 << 8)
+#define CMU_SYNCBUSY_LFCCLKEN0		(1 << 8)
 /* Bit 7 - Reserved */
-#define CMU_SYNCBUSY_LFBPRESC0     (1 << 6)
+#define CMU_SYNCBUSY_LFBPRESC0		(1 << 6)
 /* Bit 5 - Reserved */
-#define CMU_SYNCBUSY_LFBCLKEN0     (1 << 4)
+#define CMU_SYNCBUSY_LFBCLKEN0		(1 << 4)
 /* Bit 3 - Reserved */
-#define CMU_SYNCBUSY_LFAPRESC0     (1 << 2)
+#define CMU_SYNCBUSY_LFAPRESC0		(1 << 2)
 /* Bit 1 - Reserved */
-#define CMU_SYNCBUSY_LFACLKEN0     (1 << 0)
+#define CMU_SYNCBUSY_LFACLKEN0		(1 << 0)
 
 /* CMU_FREEZE */
-#define CMU_FREEZE_REGFREEZE	(1 << 0)
+#define CMU_FREEZE_REGFREEZE		(1 << 0)
 
 /* CMU_LFACLKEN0 */
-#define CMU_LFACLKEN0_RTC	    (1 << 0)
+#define CMU_LFACLKEN0_RTC		(1 << 0)
 
 /* CMU_LFBCLKEN0 */
-#define CMU_LFBCLKEN0_LEUART0	(1 << 0)
+#define CMU_LFBCLKEN0_LEUART0		(1 << 0)
 
 /* CMU_LFCCLKEN0 */
-#define CMU_LFCCLKEN0_USBLE     (1 << 0)
+#define CMU_LFCCLKEN0_USBLE		(1 << 0)
 
 /* CMU_LFAPRESC0 */
 #define CMU_LFAPRESC0_RTC_SHIFT		(0)
@@ -566,41 +566,41 @@
 #define CMU_LOCK_LOCKKEY_UNLOCK		(0x580E << CMU_LOCK_LOCKKEY_SHIFT)
 
 /* CMU_USBCRCTRL */
-#define CMU_USBCRCTRL_LSMODE       (1 << 1)
-#define CMU_USBCRCTRL_EN           (1 << 0)
+#define CMU_USBCRCTRL_LSMODE		(1 << 1)
+#define CMU_USBCRCTRL_EN		(1 << 0)
 
 /* CMU_USHFRCOCTRL */
 /* Bits 31:20 - Reserved */
-#define CMU_USHFRCOCTRL_TIMEOUT_MASK    (0xff << 12)
+#define CMU_USHFRCOCTRL_TIMEOUT_MASK	(0xff << 12)
 /* Bits 11:10 - Reserved */
-#define CMU_USHFRCOCTRL_SUSPEND         (1 << 9)
-#define CMU_USHFRCOCTRL_DITHEN          (1 << 8)
+#define CMU_USHFRCOCTRL_SUSPEND		(1 << 9)
+#define CMU_USHFRCOCTRL_DITHEN		(1 << 8)
 /* Bit 7 - Reserved */
-#define CMU_USHFRCOCTRL_TUNING_MASK     (0x7f << 0)
+#define CMU_USHFRCOCTRL_TUNING_MASK	(0x7f << 0)
 
 /* CMU_USHFRCOTUNE */
 /* Bits 31:6 - Reserved */
-#define CMU_USHFRCOTUNE_FINETUNING_MASK (0x3f << 0)
+#define CMU_USHFRCOTUNE_FINETUNING_MASK	(0x3f << 0)
 
 /* CMU_USHFRCOCONF */
 /* Bits 31:5 - Reserved */
-#define CMU_USHFRCOTUNE_USHFRCODIV2DIS  (1 << 4)
+#define CMU_USHFRCOTUNE_USHFRCODIV2DIS	(1 << 4)
 /* Bit 3 - Reserved */
-#define CMU_USHFRCOCONF_BAND_MASK       (0x7 << 0)
-#define CMU_USHFRCOCONF_BAND_48MHZ      (0x1 << 0)
-#define CMU_USHFRCOCONF_BAND_24MHZ      (0x3 << 0)
+#define CMU_USHFRCOCONF_BAND_MASK	(0x7 << 0)
+#define CMU_USHFRCOCONF_BAND_48MHZ	(0x1 << 0)
+#define CMU_USHFRCOCONF_BAND_24MHZ	(0x3 << 0)
 
 #define _REG_BIT(base, bit)		(((base) << 5) + (bit))
 
 enum cmu_periph_clken {
 	/* CMU_PCNTCTRL */
-	CMU_PCNT0   = _REG_BIT(0x078, 1),
+	CMU_PCNT0	= _REG_BIT(0x078, 1),
 
-    /* CMU_LFCCLKEN0 */
-    CMU_USBLE   = _REG_BIT(0x064, 0),
+	/* CMU_LFCCLKEN0 */
+	CMU_USBLE	= _REG_BIT(0x064, 0),
 
 	/* CMU_LFBCLKEN0 */
-	CMU_LEUART0 = _REG_BIT(0x060, 0),
+	CMU_LEUART0	= _REG_BIT(0x060, 0),
 
 	/* CMU_LFACLKEN0 */
 	CMU_RTC		= _REG_BIT(0x058, 0),
