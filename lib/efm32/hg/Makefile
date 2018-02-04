@@ -41,10 +41,10 @@ TGT_CFLAGS	+= $(STANDARD_FLAGS)
 ARFLAGS		= rcs
 OBJS		=
 
-OBJS		= gpio.o cmu.o
+OBJS		= gpio_common_hglg.o cmu.o
 OBJS		+= usb.o usb_control.o usb_standard.o usb_msc.o usb_efm32hg.o
 
-VPATH += ../../usb:../:../../cm3
+VPATH += ../../usb:../:../../cm3:../common
 
 include ../../Makefile.include
 
