@@ -17,8 +17,11 @@
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBOPENCM3_EFM32_WDOG_H
-#define LIBOPENCM3_EFM32_WDOG_H
+/** @cond */
+#if defined(LIBOPENCM3_WDOG_H)
+/** @endcond */
+#ifndef LIBOPENCM3_EFM32_WDOG_COMMON_HGLG_H
+#define LIBOPENCM3_EFM32_WDOG_COMMON_HGLG_H
 
 #include <libopencm3/efm32/memorymap.h>
 #include <libopencm3/cm3/common.h>
@@ -73,3 +76,8 @@
 #define WDOG_SYNCBUSY_CTRL		(1 << 0)
 
 #endif
+/** @cond */
+#else
+#warning "wdog_common_hglg.h should not be included explicitly, only via wdog.h"
+#endif
+/** @endcond */
