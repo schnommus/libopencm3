@@ -169,7 +169,7 @@ bool cmu_osc_ready_flag(enum cmu_osc osc)
 }
 
 /**
- * Wait till oscillator is not ready
+ * Wait while oscillator is not ready
  * @param[in] osc enum cmu_osc Oscillator name
  */
 void cmu_wait_for_osc_ready(enum cmu_osc osc)
@@ -224,6 +224,10 @@ void cmu_set_hfclk_source(enum cmu_osc osc)
 	}
 }
 
+/**
+ * Get HFCLK clock source
+ * @retval enum cmu_osc Oscillator name
+ */
 enum cmu_osc cmu_get_hfclk_source(void)
 {
 	uint32_t status = CMU_STATUS;
@@ -241,6 +245,10 @@ enum cmu_osc cmu_get_hfclk_source(void)
 	return (enum cmu_osc) -1;
 }
 
+/**
+ * Set USBCLK clock source
+ * @retval enum cmu_osc Oscillator name
+ */
 void cmu_set_usbclk_source(enum cmu_osc osc)
 {
 	switch (osc) {
@@ -259,6 +267,10 @@ void cmu_set_usbclk_source(enum cmu_osc osc)
 	}
 }
 
+/**
+ * Wait while USBCLK is not selected
+ * @param[in] osc enum cmu_osc Oscillator name
+ */
 void cmu_wait_for_usbclk_selected(enum cmu_osc osc)
 {
 	switch (osc) {
