@@ -34,17 +34,13 @@ void delay_setup(void)
 
 void delay_us(uint16_t us)
 {
-	uint32_t time_start;
-	volatile uint32_t time_now;
-
+	volatile uint16_t time_now = 0;
 	/* Convert microseconds into timer ticks */
-	uint32_t delay_ahb_cycles = us * (ahb_frequency / 1e6);
+	uint16_t delay_ahb_cycles = us * (ahb_frequency / 10000000);
 
-	if (us) {
-		time_start = TIMER2_CNT;
-		do {
-			time_now = TIMER2_CNT;
-		} while ((time_now - time_start) < delay_ahb_cycles);
+	TIMER2_CNT = 0;
+	while (time_now < delay_ahb_cycles) {
+		time_now = TIMER2_CNT;
 	}
 }
 
