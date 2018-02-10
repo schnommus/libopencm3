@@ -36,7 +36,7 @@ void delay_us(uint16_t us)
 {
 	volatile uint16_t time_now = 0;
 	/* Convert microseconds into timer ticks */
-	uint16_t delay_ahb_cycles = us * (ahb_frequency / 10000000);
+	uint16_t delay_ahb_cycles = us * (ahb_frequency / 1000000);
 
 	TIMER2_CNT = 0;
 	while (time_now < delay_ahb_cycles) {

@@ -24,6 +24,7 @@
 #include <libopencm3/efm32/memorymap.h>
 #include <libopencm3/efm32/cmu.h>
 #include <libopencm3/efm32/usb.h>
+#include <libopencm3/efm32/otg_fs.h>
 #include <libopencm3/usb/usbd.h>
 #include "usb_private.h"
 #include "usb_dwc_common.h"
@@ -78,20 +79,24 @@ static usbd_device *efm32hg_usbd_init(void)
 	OTG_FS_GRSTCTL |= OTG_GRSTCTL_CSRST;
 	while (OTG_FS_GRSTCTL & OTG_GRSTCTL_CSRST);
 
-	/* Setup full speed device */
+	/* Explicitly enable DP pullup (not all cores do this by default) */
+	OTG_FS_DCTL &= ~OTG_DCTL_SDIS;
+
+	/* Force peripheral only mode. */
+	OTG_FS_GUSBCFG |= OTG_GUSBCFG_FDMOD | OTG_GUSBCFG_TRDT_MASK;
+
+	OTG_FS_GINTSTS = OTG_GINTSTS_MMIS;
+
+	/* Full speed device. */
 	OTG_FS_DCFG |= OTG_DCFG_DSPD;
 
 	/* Restart the PHY clock. */
 	OTG_FS_PCGCCTL = 0;
 
-	/* Set Rx FIFO size */
 	OTG_FS_GRXFSIZ = efm32hg_usb_driver.rx_fifo_size;
 	_usbd_dev.fifo_mem_top = efm32hg_usb_driver.rx_fifo_size;
 
-	/* Explicitly enable DP pullup (not all cores do this by default) */
-	OTG_FS_DCTL &= ~OTG_DCTL_SDIS;
-
-	/* Unmask interrupts for TX and RX */
+	/* Unmask interrupts for TX and RX. */
 	OTG_FS_GAHBCFG |= OTG_GAHBCFG_GINT;
 	OTG_FS_GINTMSK = OTG_GINTMSK_ENUMDNEM |
 			 OTG_GINTMSK_RXFLVLM |

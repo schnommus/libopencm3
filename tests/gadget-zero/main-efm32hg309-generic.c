@@ -22,9 +22,6 @@
 #include <libopencm3/cm3/vector.h>
 #include <libopencm3/cm3/scb.h>
 #include <libopencm3/cm3/nvic.h>
-#include <libopencm3/efm32/wdog.h>
-#include <libopencm3/efm32/gpio.h>
-#include <libopencm3/efm32/cmu.h>
 
 #include <stdio.h>
 #include "usb-gadget0.h"
@@ -38,11 +35,6 @@
 	do { } while (0)
 #endif
 
-#define LED_GREEN_PORT GPIOA
-#define LED_GREEN_PIN  GPIO0
-#define LED_RED_PORT   GPIOB
-#define LED_RED_PIN    GPIO7
-
 const uint32_t ahb_frequency = 14000000;
 
 usbd_device *usbd_dev = NULL;
@@ -54,35 +46,15 @@ void trace_send_blocking8(int stimulus_port, char c)
 	(void)c;
 }
 
-void usb_isr(void)
-{
-	//gadget0_run(usbd_dev);
-	usbd_poll(usbd_dev);
-	gpio_toggle(LED_GREEN_PORT, LED_GREEN_PIN);
-}
-
 int main(void)
 {
-	/* Disable the watchdog that the bootloader started. */
-	WDOG_CTRL = 0;
-
-	/* Set up both LEDs as outputs */
-	cmu_periph_clock_enable(CMU_GPIO);
-	gpio_mode_setup(LED_RED_PORT, GPIO_MODE_WIRED_AND, LED_RED_PIN);
-	gpio_mode_setup(LED_GREEN_PORT, GPIO_MODE_WIRED_AND, LED_GREEN_PIN);
-	gpio_set(LED_RED_PORT, LED_RED_PIN);
-
 	usbd_dev = gadget0_init(&efm32hg_usb_driver,
 			"efm32hg309-generic");
 
-	/* Enable USB IRQs */
-	nvic_enable_irq(NVIC_USB_IRQ);
-
 	ER_DPRINTF("bootup complete\n");
-	gpio_clear(LED_RED_PORT, LED_RED_PIN);
 
 	while (1) {
-		/* usb_isr will execute gadget0_run */
+		gadget0_run(usbd_dev);
 	}
 }
 
