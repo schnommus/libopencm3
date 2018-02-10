@@ -195,8 +195,8 @@ uint16_t dwc_ep_write_packet(usbd_device *usbd_dev, uint8_t addr,
 {
 	const uint32_t *buf32 = buf;
 #if defined(__ARM_ARCH_6M__)
-	const uint32_t *buf8 = buf;
-	volatile uint32_t word32;
+	const uint8_t *buf8 = buf;
+	uint32_t word32;
 #endif /* defined(__ARM_ARCH_6M__) */
 	int i;
 
@@ -244,8 +244,8 @@ uint16_t dwc_ep_read_packet(usbd_device *usbd_dev, uint8_t addr,
 	int i;
 	uint32_t *buf32 = buf;
 #if defined(__ARM_ARCH_6M__)
-	uint32_t *buf8 = buf;
-	volatile uint32_t word32;
+	uint8_t *buf8 = buf;
+	uint32_t word32;
 #endif /* defined(__ARM_ARCH_6M__) */
 	uint32_t extra;
 
@@ -274,10 +274,11 @@ uint16_t dwc_ep_read_packet(usbd_device *usbd_dev, uint8_t addr,
 		for (i = len; i >= 4; i -= 4) {
 			word32 = REBASE(OTG_FIFO(0));
 			memcpy(buf8, &word32, 4);
+			usbd_dev->rxbcnt -= 4;
 			buf8 += 4;
 		}
 		/* buf32 needs to be updated as it is used for extra */
-		buf32 = buf8;
+		buf32 = (uint32_t*)buf8;
 	}
 #endif /* defined(__ARM_ARCH_6M__) */
 
