@@ -43,5 +43,3 @@ void delay_us(uint16_t us)
 		time_now = TIMER2_CNT;
 	}
 }
-
-

@@ -278,7 +278,7 @@ uint16_t dwc_ep_read_packet(usbd_device *usbd_dev, uint8_t addr,
 			buf8 += 4;
 		}
 		/* buf32 needs to be updated as it is used for extra */
-		buf32 = (uint32_t*)buf8;
+		buf32 = (uint32_t *)buf8;
 	}
 #endif /* defined(__ARM_ARCH_6M__) */
 

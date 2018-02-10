@@ -35,7 +35,6 @@
 	do { } while (0)
 #endif
 
-usbd_device *usbd_dev = NULL;
 const uint32_t ahb_frequency = 14000000;
 
 #include "trace.h"
@@ -45,23 +44,15 @@ void trace_send_blocking8(int stimulus_port, char c)
 	(void)c;
 }
 
-void usb_isr(void)
-{
-       usbd_poll(usbd_dev);
-}
-
 int main(void)
 {
-	usbd_dev = gadget0_init(&efm32hg_usb_driver,
+	usbd_device *usbd_dev = gadget0_init(&efm32hg_usb_driver,
 			"efm32hg309-generic");
-
-	/* Enable USB IRQs */
-	nvic_enable_irq(NVIC_USB_IRQ);
 
 	ER_DPRINTF("bootup complete\n");
 
 	while (1) {
-		/* usb stack is kept alive in usb_isr */
+		gadget0_run(usbd_dev);
 	}
 }
 
