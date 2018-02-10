@@ -32,8 +32,8 @@
 /* Receive FIFO size in 32-bit words. */
 #define RX_FIFO_SIZE 256
 
-/* FIXME: EFM32HG has 6 bidirectional endpoints
- * See detailed comment in usb_efm32lg.c */
+/* FIXME: EFM32HG has 6 bidirectional endpoints.
+ *  problem is "uint32_t doeptsiz[4];" in usb_private.h */
 
 #define ENDPOINT_COUNT 4
 
