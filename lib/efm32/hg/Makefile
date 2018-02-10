@@ -42,7 +42,8 @@ ARFLAGS		= rcs
 OBJS		=
 
 OBJS		= gpio_common_hglg.o timer_common_hglg.o cmu.o
-OBJS		+= usb.o usb_control.o usb_standard.o usb_msc.o usb_efm32hg.o
+OBJS		+= usb.o usb_control.o usb_standard.o usb_msc.o \
+		   usb_dwc_common.o usb_efm32hg.o
 
 VPATH += ../../usb:../:../../cm3:../common
 

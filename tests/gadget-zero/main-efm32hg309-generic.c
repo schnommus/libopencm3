@@ -56,7 +56,8 @@ void trace_send_blocking8(int stimulus_port, char c)
 
 void usb_isr(void)
 {
-	gadget0_run(usbd_dev);
+	//gadget0_run(usbd_dev);
+	usbd_poll(usbd_dev);
 	gpio_toggle(LED_GREEN_PORT, LED_GREEN_PIN);
 }
 
