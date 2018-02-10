@@ -26,7 +26,7 @@
 #define LIBOPENCM3_OTG_FS_H
 
 #include <libopencm3/cm3/common.h>
-#include <libopencm3/stm32/memorymap.h>
+#include <libopencm3/efm32/memorymap.h>
 #include <libopencm3/usb/dwc_otg_common.h>
 
 /***********************************************************************/
