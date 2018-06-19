@@ -282,8 +282,8 @@
 /* OTG Device Control IN Endpoint 0 Control Register (OTG_DIEPCTL0) */
 #define OTG_DIEPCTL0_EPENA		(1 << 31)
 #define OTG_DIEPCTL0_EPDIS		(1 << 30)
-/* Bits 29:28 - Reserved */
-#define OTG_DIEPCTLX_SD0PID		(1 << 28)
+#define OTG_DIEPCTLX_SD0PID		(1 << 29) /* Odd frames  (not default -> toggle for ISO!)*/
+#define OTG_DIEPCTLX_SD0PID		(1 << 28) /* Even frames (default) */
 #define OTG_DIEPCTL0_SNAK		(1 << 27)
 #define OTG_DIEPCTL0_CNAK		(1 << 26)
 #define OTG_DIEPCTL0_TXFNUM_MASK	(0xf << 22)
